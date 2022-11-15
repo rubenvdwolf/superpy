@@ -1,0 +1,122 @@
+import argparse
+from functions import advance_time, inventory_check_now, inventory_check_yesterday, inventory_check_date, def_buy_product, def_sell_product, def_revenue_today, def_revenue_yesterday, def_revenue_date, def_profit_today, def_profit_yesterday, def_profit_date, def_chart, expired_products
+
+# create parser
+parser = argparse.ArgumentParser()
+# create subparser
+subparser = parser.add_subparsers(dest='command')
+
+# subparser for buying a product
+buy_product = subparser.add_parser('buy', help='Add product to inventory. Add product details using --product, --price and --expiration')
+buy_product.add_argument('--product', type=str,
+                         metavar='', help='Product Name')
+buy_product.add_argument('--price', type=float, metavar='',
+                         help='Price with at lease one decimal')
+buy_product.add_argument('--expiration', type=str,
+                         metavar='', help='Add a date with notation YYYY-MM-DD')
+
+# parser for advancing time
+parser.add_argument('--advancetime', metavar='',
+                    help='Add a number of days to advance the current date')
+
+# subparser for checking the inventory
+inventory = subparser.add_parser(
+    'inventory', help='Check the inventory at a specified date by adding --now, --yesterday or --date (YYYY-MM-DD)')
+inventory.add_argument('--now',
+                       help='Inventory at this moment', action='store_true')
+inventory.add_argument(
+    '--yesterday', help='Inventory yesterday', action='store_true')
+inventory.add_argument('--date', type=str, metavar='',
+                       help='Inventory on a date to be chosen (YYYY-MM-DD')
+
+# subparser for selling a product
+sell_product = subparser.add_parser(
+    'sell', help='Sell a product from the inventory. Add --product and --price')
+sell_product.add_argument('--product', type=str,
+                          metavar='', help='Product Name')
+sell_product.add_argument('--price', type=float,
+                          metavar='', help='Price with at least one decimal')
+
+# parser for listing the expired products
+parser.add_argument('--expired', help='List all the expired products, when they expired, and how much money was wasted.', action='store_true')
+
+# subparser for reporting the revenue
+revenue = subparser.add_parser(
+    'revenue', help='Report the revenue on a specified date by adding --today, --yesterday or --date (YYYY-MM or YYYY-MM-DD')
+revenue.add_argument('--today',
+                     help="Today's revenue so far", action='store_true')
+revenue.add_argument(
+    '--yesterday', help="Yesterday's revenue", action='store_true')
+revenue.add_argument('--date', type=str, metavar='',
+                     help='Revenue on a date to be chosen')
+
+# subparser for reporting the revenue
+profit = subparser.add_parser(
+    'profit', help='Report the profit on a specified date by adding --today, --yesterday or --date (YYYY-MM or YYYY-MM-DD')
+profit.add_argument('--today',
+                     help="Today's profit so far", action='store_true')
+profit.add_argument(
+    '--yesterday', help="Yesterday's profit", action='store_true')
+profit.add_argument('--date', type=str, metavar='',
+                     help='Profit on a date to be chosen')
+
+# parser for showing revenue/profit chart
+parser.add_argument('--chart', metavar='',
+                    help='Display a bar chart containing the revenue en profit per month for a given year')
+
+# create argparse arguments
+args = parser.parse_args()
+
+# run functions based on parsed arguments in commandline
+if args.advancetime:
+    try:
+        advance_time(args.advancetime)
+    except TypeError:
+        print('Please enter a valid number of days, example: 3')
+if args.command == 'buy':
+    def_buy_product(args.product, args.price, args.expiration)
+if args.command == 'inventory':
+    if args.now:
+        inventory_check_now()
+    elif args.yesterday:
+        inventory_check_yesterday()
+    elif args.date:
+        try:
+            inventory_check_date(args.date)
+        except ValueError:
+            print('Error: date format must be YYYY-MM-DD')
+    else:
+        print(
+            'Please specify a day for which to show the inventory: "--now", "--yesterday" or "--date(YYYY-MM-DD)"')
+if args.command == 'sell':
+    def_sell_product(args.product, args.price)
+if args.command == 'revenue':
+    if args.today:
+        def_revenue_today()
+    elif args.yesterday:
+        def_revenue_yesterday()
+    elif args.date:
+        def_revenue_date(args.date)
+    else:
+        print(
+            'Please specify a day for which to report the revenue: "--today", "--yesterday" or "--date(YYYY-MM)"')
+if args.command == 'profit':
+    if args.today:
+        def_profit_today()
+    elif args.yesterday:
+        def_profit_yesterday()
+    elif args.date:
+        try:
+            def_profit_date(args.date)
+        except ValueError:
+            print('Error: date format must be YYYY-MM')
+    else:
+        print(
+            'Please specify a day for which to report the profit: "--today", "--yesterday" or "--date(YYYY-MM)"')
+if args.chart:
+    try:
+        def_chart(args.chart)
+    except TypeError:
+        print('Please enter a valid year, example: 2022')
+if args.expired:
+    expired_products()

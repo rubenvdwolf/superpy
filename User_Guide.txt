@@ -1,0 +1,62 @@
+SuperPy Inventory Tool
+
+The SuperPy Inventory Tool is a commandline tool that will help you keep track of your inventory. 
+You can: 
+- buy products (add products to your inventory);
+- sell products;
+- report the inventory at specified dates;
+- report either the profit or revenue on a specific day or month
+- generate a chart with the profit and revenue over a requested year
+- generate a list of expired products
+
+Before running the program, make sure you have installed the required modules. Please follow the steps in 'requirements.txt'.
+
+To get going, open command prompt on windows or terminal on mac, and head over to the superpy directory containing all the files.
+
+There are special commands you can use to do a variety of things. All commands should be preceded by 'python main.py' on windows or 'python3 main.py' on mac.
+
+Buying a product (add it to the inventory): 'buy --product --price --expiration'
+    Example: 'buy --product apple --price 2 --expiration 2022-11-10'
+    Explanation: 
+    --product should contain the product name. This must be one word. If it is two words it can be connected using a '-'
+    --price should contain the price for which you buy the product. This must be a number, with or without a decimal.
+    --expiration should contain an expiration date for the product
+    The tool will automatically add the current date and an ID number to the product.
+
+Selling a product: 'sell --product --price'
+    Example: 'sell --product apple --price 3.0'
+    --product should contain the product name. This must be one word. If it is two words it can be connected using a '-'
+    --price should contain the price for which you buy the product. This must be a number, with or without a decimal.
+    The tool will automatically add the current date, bought_ID number and new ID number to the product
+
+Advancing the time: '--advancetime'
+    Example: '--advancetime 2'
+    Since this is a fictional program that is not aware of the current date, a date has been added to a text file 'current_date.txt'.
+    This date always contains the current date. The current date can be advanced by any number of days by using this command.
+    Whenever the date is advanced, all the products that expired in the meantime (and were not sold) are removed.
+
+Checkig the inventory: 'inventory'
+    Using the inventory command, one can check the inventory at specific moments. This can be done by adding one of the three arguments:
+    --now ('inventory --now') compiles a list of the current inventory.
+    --yesterday ('inventory --yesterday') compiles a list of the inventory yesterday (at the 'end' of the day).
+    --date ('inventory --date 2022-11-16) compiles a list of the inventory at a chosen date (format must be YYYY-MM-DD).
+
+Checking the revenue: 'revenue'
+    Using the revenue command, one can check the revenue for today, yesterday or a chosen day or month.
+    --today ('revenue --today') gives today's total revenue
+    --yesterday ('revenue --yesterday') gives yesterday's total revenue
+    --date ('revenue --date 2022-11' or 'revenue --date 2022-11-16') gives the revenue in a chosen month or day. (Format must be 'YYYY-MM' or 'YYYY-MM-DD')
+
+Checking the profit: 'profit'
+    Using the profit command, one can check the profit for today, yesterday or a chosen day or month.
+    --today ('profit --today') gives today's total profit
+    --yesterday ('profit --yesterday') gives yesterday's total profit
+    --date ('profit --date 2022-11' or 'profit --date 2022-11-16') gives the profit in a chosen month or day. (Format must be 'YYYY-MM' or 'YYYY-MM-DD')
+
+A bar chart of revenue and profit over a year: '--chart'
+    Example: '--chart 2022'
+    The 'chart' command generates a bar chart showing the revenue and profit per month over a chosen year. 
+
+Checking the expired products: '--expired'
+    The '--expired' command generates a list of all the expired products.
+   

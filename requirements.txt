@@ -1,0 +1,8 @@
+Modules that need to be installed before using the SuperPy Inventory Tool:
+
+Rich - https://github.com/Textualize/rich
+    To test if rich is installed run command 'python -m rich'
+    Install by running command 'python -m pip install rich'
+
+Matplotlib - https://matplotlib.org/
+    Install by running command 'python -m pip install matplotlib'
